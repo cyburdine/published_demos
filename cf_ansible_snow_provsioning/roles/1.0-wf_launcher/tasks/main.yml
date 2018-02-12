@@ -1,0 +1,21 @@
+---
+- name: Get encrypted variables
+  include_vars: wf_launcher_vars.yml
+
+- name: Job Template to launch a Workflow Job Template
+  uri:
+    url: https://{{ ansible_tower_ip }}/api/v1/workflow_job_templates/{{ workflow_job_template_id }}/launch/
+    method: POST
+    user: "{{ tower_user }}"
+    password: "{{ tower_pass }}"
+    body:
+      extra_vars:
+        launched_from: CloudForms
+        my_os: "{{ my_os | default('Windows Datacenter 2012 R2') }}"
+        my_vm_size: "{{ my_vm_size | default('Basic_A0') }}"
+        instance_name: "{{ my_vm_name | default('energyco-vm-01') }}"
+    body_format: json
+    validate_certs: False
+    headers:
+      Content-Type: "application/json"
+    status_code: 200, 201

@@ -1,0 +1,29 @@
+- name: Delete named Azure instance and all resources
+  azure_rm_virtualmachine:
+    resource_group: web
+    name: "{{ vm_name }}"
+    state: absent
+    remove_on_absent: all
+  when: vm_name is defined
+
+- name: Delete named Azure Security Group
+  azure_rm_securitygroup:
+    resource_group: web
+    name: "{{ vm_name }}01"
+    state: absent
+  when: vm_name is defined
+
+- name: Delete all Azure instances in inventory
+  azure_rm_virtualmachine:
+    resource_group: web
+    name: "{{ inventory_hostname }}"
+    state: absent
+    remove_on_absent: all
+  when: vm_name is not defined
+
+- name: Delete named Azure Security Group
+  azure_rm_securitygroup:
+    resource_group: web
+    name: "{{ inventory_hostname }}01"
+    state: absent
+  when: vm_name is not defined

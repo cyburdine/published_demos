@@ -1,0 +1,21 @@
+---
+- name: UPDATE ServceNow Incident Ticket
+  hosts: "{{ instance_name }}"
+  gather_facts: False
+  connection: local
+
+####
+##   Below are the required variables needed to run this playbook
+####
+#    snow_username: [snow username]
+#    snow_password: [snow password]
+#    snow_urgency: [numeric value that correspondes with your defined SNOW severity values, usually 1,2 or 3]
+#    snow_short_description: [Description of the problem. Example "System Crashed"]
+#    snow_description: [Longer Description of the problem. Example "The system crashed and was automatically rebooted"]
+#    snow_instance_url: [FQDN of your ServiceNow instance. Example "MY_INSTANCE.service-now.com"]
+####
+#   Don't edit these, these will automatically set if run from Ansible Tower
+####
+
+  roles:
+  - snow_update_incident

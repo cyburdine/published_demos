@@ -1,0 +1,67 @@
+- name: "Get playbook variables"
+  include_vars:
+    dir: 'vars'
+    extensions: ['yml']
+
+- name: Setup Azure security groups for Windows Server
+  azure_rm_securitygroup:
+    resource_group: "{{ azure_resource_group }}"
+    name: "{{ instance_name | default('default_security_group')}}01"
+    purge_rules: yes
+    rules:
+      - name: DenySSH
+        protocol: Tcp
+        description: "deny SSH"
+        destination_port_range: 22
+        access: Deny
+        priority: 100
+        direction: Inbound
+
+      - name: AllowRDP
+        protocol: '*'
+        description: "Allow RDP"
+        destination_port_range: 3389
+        access: Allow
+        priority: 101
+        direction: Inbound
+
+      - name: AllowWinRM
+        protocol: Tcp
+        description: "Allow WinRM (HTTPS)"
+        destination_port_range: 5986
+        source_address_prefix: '209.189.231.135/32'
+        access: Allow
+        priority: 103
+        direction: Inbound
+
+      - name: AllowAllOutbound
+        protocol: Tcp
+        description: "Allow All Outbound"
+        destination_port_range: '*'
+        access: Allow
+        priority: 100
+        direction: Outbound
+  when: oses[my_os].type == "Windows"
+
+- name: Setup Azure security groups for Linux Server
+  azure_rm_securitygroup:
+    resource_group: "{{ azure_resource_group }}"
+    name: "{{ instance_name | default('default_security_group')}}"
+    purge_rules: yes
+    rules:
+      - name: AllowSSH
+        protocol: Tcp
+        description: "allow SSH"
+        destination_port_range: 22
+        access: Allow
+        priority: 100
+        direction: Inbound
+
+      - name: AllowAllOutbound
+        protocol: Tcp
+        description: "Allow All Outbound"
+        destination_port_range: '*'
+        access: Allow
+        priority: 100
+        direction: Outbound
+  when: oses[my_os].type == "Linux"

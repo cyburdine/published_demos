@@ -1,0 +1,10 @@
+- name: Launching azure_set_security_groups
+  hosts: "{{ instance_name }}"
+  connection: local
+  gather_facts: False
+
+  vars:
+    azure_resource_group: web
+
+  roles:
+  - azure_set_security_groups

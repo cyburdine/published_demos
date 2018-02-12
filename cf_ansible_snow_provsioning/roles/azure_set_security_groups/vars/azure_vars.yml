@@ -1,0 +1,21 @@
+oses:
+  CentOS 7.3:
+    sku: 7.3
+    publisher: OpenLogic
+    offer: CentOS
+    type: Linux
+  RHEL 7.3:
+    sku: 7.3
+    publisher: Redhat
+    offer: RHEL
+    type: Linux
+  Windows Datacenter 2016:
+    sku: 2016-Datacenter
+    publisher: MicrosoftWindowsServer
+    offer: WindowsServer
+    type: Windows
+  Windows Datacenter 2012 R2:
+    sku: 2012-R2-Datacenter
+    publisher: MicrosoftWindowsServer
+    offer: WindowsServer
+    type: Windows

@@ -1,0 +1,33 @@
+- name: Get encrypted variables
+  include_vars: snow_vars.yml
+
+- name: Posting to SNOW API
+  uri:
+    url: https://{{ snow_instance_url }}/api/now/table/incident
+    user: "{{ snow_username }}"
+    password: "{{ snow_password }}"
+    method: POST
+    return_content: yes
+    headers:
+      Content-Type: application/json
+    body_format: json
+    body: >
+      {"opened_by":"Ansible Tower",
+      "short_description":"{{ instance_name }}: {{ snow_short_description }}",
+      "comments":"\n{{ snow_description }}",
+      "urgency":"{{ snow_urgency }}",
+      "impact":"{{ snow_urgency }}",
+      "caller_id":"System Administrator",
+      "priority":"{{ snow_urgency }}"}
+    status_code: 201
+    validate_certs: no
+  register: snow_response
+
+- name: Dumping SNOW API Response
+  debug:
+    msg: "{{ snow_response.content | from_json | json_query('result.sys_id') }}"
+
+- name: Set sys_id fact for instance
+  set_fact:
+    snow_sys_id: "{{ snow_response.content | from_json | json_query('result.sys_id') }}"
+    cacheable: true

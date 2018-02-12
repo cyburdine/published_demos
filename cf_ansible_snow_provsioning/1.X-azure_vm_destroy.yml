@@ -1,0 +1,16 @@
+- name: Launching azure_vm_destroy
+  hosts: all
+  connection: local
+  gather_facts: False
+
+  vars:
+####
+##  REQUIRED variables
+####
+#
+#    vm_name: [name of vm to be destroyed]
+#
+##
+
+  roles:
+  - azure_vm_destroy
